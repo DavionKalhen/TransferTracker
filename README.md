@@ -11,6 +11,7 @@ To run the program
 
 ```
 usage: run.py [-h] [--daemon {start,stop,restart}] [--stderr STDERR] [--stdout STDOUT] [--stdin STDIN] [--ethnode ETHNODE] [--from-block FROM_BLOCK] [--loglevel {DEBUG,INFO,WARNING,ERROR}]
+              [--track [{20,721,1155} ...]]
 
 Track ERC721 and ERC1155 transfers on an EVM compatible blockchain
 
@@ -26,4 +27,7 @@ options:
                         Block number to start from
   --loglevel {DEBUG,INFO,WARNING,ERROR}, -l {DEBUG,INFO,WARNING,ERROR}
                         Set the log level (DEBUG, INFO, WARNING, ERROR). Default is INFO.
+  --track [{20,721,1155} ...]
+                        Track ERC20, ERC721, and/or ERC1155 transfers. Default is all three.
+
 ```

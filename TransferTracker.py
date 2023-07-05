@@ -14,7 +14,6 @@ load_dotenv()
 erc721Tracker = ERC721TransferTracker()
 erc1155Tracker = ERC1155TransferTracker()
 
-ERC1155TransferSingleEventKeccak = ''
 web3 = None
 
 trackedERCEvents = {
@@ -87,7 +86,7 @@ def main(*args, **kwargs):
     latest_block_processed = None
     kwargs = kwargs['kwargs']
     callback = kwargs['callback']
-    if 'from_block' in kwargs:
+    if 'from_block' in kwargs and kwargs['from_block'] != 'latest':
         from_block = kwargs['from_block']
         current_block = web3.eth.block_number
         logging.info(
@@ -183,7 +182,8 @@ def initialize_cli():
         '--from-block', help='Block number to start from', default=block_height)
     parser.add_argument('--loglevel', '-l', choices=['DEBUG', 'INFO', 'WARNING', 'ERROR'], default='INFO',
                         help='Set the log level (DEBUG, INFO, WARNING, ERROR). Default is INFO.')
-    parser.add_argument('--track', choices=[20, 721, 1155], default=[721,1155,20], nargs='*', type=int)
+    parser.add_argument('--track', choices=[20, 721, 1155], default=[721,1155,20], nargs='*', type=int,
+                        help='Track ERC20, ERC721, and/or ERC1155 transfers. Default is all three.')
 
     args = parser.parse_args()
 
