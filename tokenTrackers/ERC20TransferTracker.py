@@ -7,7 +7,8 @@ class ERC20TransferTracker:
     track = True
 
     def process_event(self, web3, log, value):
-        if not self.track: return None
+        if not self.track:
+            return None
         contract = web3.eth.contract(address=log.address, abi=genericERC20ABI)
         if contract.address not in self.contracts_checked:
             try:
