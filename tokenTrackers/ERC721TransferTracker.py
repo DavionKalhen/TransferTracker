@@ -6,11 +6,12 @@ class ERC721TransferTracker:
     event_keccak = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
     contracts_checked = {}
     erc20Tracker = ERC20TransferTracker()
-
+    track = True
     def process_event(self, web3, log, value):
         contract = web3.eth.contract(address=log.address, abi=genericERC721ABI)
         if contract.address not in self.contracts_checked:
             try:
+                if not self.track: raise Exception()
                 self.contracts_checked[contract.address] = {
                     'supports_erc721': False, 'supports_erc1155': False, 'name': None}
                 supports_erc721 = contract.functions.supportsInterface(

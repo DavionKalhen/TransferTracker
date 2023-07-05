@@ -1,11 +1,12 @@
 from abis.erc721abi import genericERC721ABI
 
-
 class ERC1155TransferTracker:
     event_keccak = '0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62'
     contracts_checked = {}
+    track = True
 
     def process_event(self, web3, log, value):
+        if not self.track: return None
         contract = web3.eth.contract(address=log.address, abi=genericERC721ABI)
         if contract.address not in self.contracts_checked:
             try:

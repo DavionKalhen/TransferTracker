@@ -4,13 +4,15 @@ from abis.erc20abi import genericERC20ABI
 class ERC20TransferTracker:
     event_keccak = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
     contracts_checked = {}
+    track = True
 
     def process_event(self, web3, log, value):
+        if not self.track: return None
         contract = web3.eth.contract(address=log.address, abi=genericERC20ABI)
         if contract.address not in self.contracts_checked:
             try:
                 self.contracts_checked[contract.address] = {
-                    'supports_erc20': False, 'supports_erc721': False, 'supports_erc1155': False, 'name': None}
+                    'supports_erc20': False, 'supports_erc721': False, 'supports_erc1155': False, 'name': None, 'decimals': 18}
                 decimals = contract.functions.decimals().call()
                 name = ""
                 if decimals > 0:

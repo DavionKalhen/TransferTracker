@@ -96,7 +96,17 @@ def main(*args, **kwargs):
         latest_block_processed = catch_up_to_current_block(block, callback)
 
     block_filter = web3.eth.filter('latest')
-    logging.info("Starting ERC721 Transfer Tracker")
+    tracking = []
+    if erc721Tracker.erc20Tracker.track == True:
+        tracking.append("ERC20")
+    if erc721Tracker.track == True:
+        tracking.append("ERC721")
+    if erc1155Tracker.track == True:
+        tracking.append("ERC1155")
+
+
+    logging.info("Starting Transfer Tracker: %s" % ", ".join(tracking))
+
     while True:
         entries = block_filter.get_new_entries()
         if entries:
@@ -173,7 +183,16 @@ def initialize_cli():
         '--from-block', help='Block number to start from', default=block_height)
     parser.add_argument('--loglevel', '-l', choices=['DEBUG', 'INFO', 'WARNING', 'ERROR'], default='INFO',
                         help='Set the log level (DEBUG, INFO, WARNING, ERROR). Default is INFO.')
+    parser.add_argument('--track', choices=[20, 721, 1155], default=[721,1155,20], nargs='*', type=int)
+
     args = parser.parse_args()
+
+    if args.track:
+        global erc1155Tracker, erc721Tracker
+        erc1155Tracker.track = 1155 in args.track
+        erc721Tracker.track = 721 in args.track
+        erc721Tracker.erc20Tracker.track = 20 in args.track
+
     log_level = getattr(logging, args.loglevel.upper(), None)
     if not isinstance(log_level, int):
         raise ValueError('Invalid log level: %s' % args.loglevel)
