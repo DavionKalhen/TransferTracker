@@ -3,6 +3,7 @@ Using Python 3 + Web3.py.
 
 First you want to edit run.py and utilize the callback function for whatever you want. Currently it just outputs all the transfers.
 
+This isn't production ready as there is serious lag when using a node with SSL. Direct connections are amazing tho.
 To run the program
 ```
   chmod +x ./run.py
